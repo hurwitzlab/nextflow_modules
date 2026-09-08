@@ -169,27 +169,3 @@ process parse_blast_xml {
           -o mapping_hits.tsv
     '''
 }
-
-// Refine and filter parsed BLAST hits against edit-region info for a campaign
-process refine_and_filter_hits {
-    label "process_medium"
-    container "${params.container__blast}"
-    publishDir "${params.blast_outdir}", mode: 'copy'
-
-    input:
-        path(mapping_hits)
-        path(edit_regions)
-        val(campaign)
-
-    output:
-        path "guide_seeds.tsv", emit: guide_seeds
-
-    shell:
-    '''
-    refine_and_filter.py \
-          --blast_file !{mapping_hits} \
-          --edit_info !{edit_regions} \
-          --campaign !{campaign} \
-          --out guide_seeds.tsv
-    '''
-}

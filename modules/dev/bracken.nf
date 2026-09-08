@@ -7,10 +7,6 @@ process bracken {
     publishDir "${params.bracken_outdir}", mode: 'copy'
 
     input:
-        // The kmer distributions bracken needs to run are bundled with the kraken database,
-        // this may change later as bracken / kraken / centrifuge database construction is automated.
-        // kreport is staged under a fixed name because bracken derives the updated-kreport
-        // output filename from the input report's basename (not settable via a flag).
         tuple val(sampleid), path(kreport, stageAs: "in.kreport")
         path(kraken2_db)
         val(kmer_size)
