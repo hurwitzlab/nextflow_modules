@@ -62,19 +62,40 @@ but resource amounts are the pipeline's call, not this repo's.
 If a module you need references a param your pipeline's config doesn't have
 yet, add it — see the module's file for the exact `params.*` names it expects.
 
+## Repo layout: `modules/` vs `modules/dev/`
+
+- **`modules/`** — the reviewed set. If a pipeline can `include` it today,
+  it lives here.
+- **`modules/dev/`** — staging for modules converted or written but not yet
+  reconciled against what's already in `modules/`. Nothing here is
+  guaranteed to work, and nothing here should be `include`d by a pipeline.
+
+Promoting a module out of `dev/`:
+
+1. Check whether `modules/` already has a file for the same tool.
+2. **No existing file** — move it up as a new file.
+3. **Existing file, different process name(s)** — merge your process(es)
+   into the existing file as additional `process` blocks (one file per
+   tool, per `modules/CLAUDE.md`), then remove the file from `dev/`.
+4. **Existing file, same process name** — a real collision. Don't just pick
+   one and delete the other; check whether they're actually redundant or
+   cover different cases, and reconcile by hand (rename, merge logic, or
+   consolidate) before promoting either.
+
 ## Available modules
 
-| file | processes | tool(s) |
-|---|---|---|
-| `bbmap.nf` | `bbwrap`, `pileup` | BBMap (read alignment + coverage) |
-| `checkv.nf` | `checkv` | CheckV (viral inference quality assessment) |
-| `deepvirfinder.nf` | `deepvirfinder` | DeepVirFinder (viral inference) |
-| `genomad.nf` | `genomad` | geNomad (viral/plasmid inference) |
-| `marvel.nf` | `marvel` | MARVEL (phage bin inference from reads) |
-| `samtools.nf` | `sam_to_bam`, `sort_bam`, `index_bam` | Samtools (SAM/BAM conversion, sort, index) |
-| `vibrant.nf` | `vibrant` | VIBRANT (viral inference) |
-| `virsorter2.nf` | `virsorter2` | VirSorter2 (viral inference) |
-| `filter_viral_genomad.nf` | `filter_viral_contigs`, `extract_fasta_viral_selection` | **Work in progress** — shell blocks not yet implemented |
+This repo holds 100+ tool modules as of this writing — a hand-maintained
+table here goes stale within a day given how often modules get added or
+promoted from `modules/dev/`. To see what's actually available:
+
+```bash
+ls modules/*.nf                                     # every module file
+grep -h '^process\|^ process' modules/*.nf | sort    # every process name, across all files
+```
+
+Some tools have multiple processes in one file (e.g. `bbmap.nf` has
+`bbwrap` + `pileup`; `samtools.nf` has several BAM/SAM conversion steps) —
+see **File layout** in `modules/CLAUDE.md` for why.
 
 ## Adding a new module
 
@@ -85,3 +106,70 @@ yet, add it — see the module's file for the exact `params.*` names it expects.
    it done.
 4. In your PR description, list every `params.*` name the new module
    references, so pipeline maintainers know what to add to their own config.
+
+## Contributing
+
+This repo gets edited concurrently — by different lab members, and often by
+more than one Claude Code session at once. That's exactly how a real
+process-name collision (two modules both defining a process called
+`vibrant`) happened here. Before adding a module:
+
+1. Check `modules/*.nf` for an existing file with the same tool name — don't
+   assume a name is free just because your own source material doesn't
+   mention an existing module.
+2. If it already exists, add your process(es) to that file instead of
+   creating a duplicate (see **Repo layout** above for the full promotion
+   decision tree if you're coming from `modules/dev/`).
+3. Follow `modules/CLAUDE.md` and `modules/TEMPLATE.nf` either way (see
+   **Adding a new module** above).
+
+## Known issues
+
+- `modules/bbmap.nf copy` — a stray file (content differs from `bbmap.nf`,
+  looks like an accidental Finder duplicate). Should be deleted or explained;
+  it isn't a real module.
+- `modules/dev/phamb.nf` and `modules/dev/viralverify.nf` — both completely
+  empty (0 bytes), placeholders with no `process` block at all.
+- `modules/dev/virfinder.nf` — unbalanced braces (8 `{` vs. 7 `}`), so its
+  final `process` block never closes.
+
+None of the three `dev/` files above should be promoted or `include`d as-is.
+
+## Working on this repo
+
+Whatever you change here — a module, `CLAUDE.md`, this README, anything —
+**record it in `NOTEBOOK.md` before you're done**, not just in the commit
+message. The commit says *what* changed; the notebook says *why* and *what
+happened* (results, errors, decisions, flags for whoever picks this up next),
+which is exactly the context a diff can't carry on its own.
+
+### Lab notebook conventions
+
+`NOTEBOOK.md` at the repo root is a chronological, append-only log of work
+sessions on this repo — one dated entry per session, covering what was done,
+what happened (concrete results/errors, not a diff restatement), and the
+decision or next step. Never edit or reorder past entries; always append.
+
+If you use Claude Code, this convention is checked in as a project skill at
+`.claude/skills/notebook/` — anyone who clones this repo gets the same
+`/notebook` behavior automatically, no setup needed. If you don't use Claude
+Code, follow the header format documented at the top of `NOTEBOOK.md` itself.
+
+### A prompt to record your session
+
+If you're using Claude Code (or a similar assistant) here, `/notebook` alone
+does this. If you're prompting a general assistant, or want to be explicit
+about what you expect, something like this works:
+
+```
+Before we wrap up, review what we changed in this session and append one
+dated entry to NOTEBOOK.md at the repo root, following the format in its own
+header. Cover:
+- what was done/tried
+- what happened — concrete results, errors, numbers, not a restatement of
+  the diff
+- any decision made or flags left for whoever works on this next
+
+If today's date already has an entry, add to it rather than starting a new
+heading. Never edit or reorder any past entry — only append.
+```
