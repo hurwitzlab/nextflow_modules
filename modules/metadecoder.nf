@@ -3,8 +3,8 @@
 // Bin contigs by coverage and sequence composition using MetaDecoder
 process metadecoder_bin_contigs {
     label "process_medium"
+    label "publish_final"
     container "${params.container__metadecoder}"
-    publishDir "${params.metadecoder_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs, stageAs: "assembly.fasta"), path(bam)

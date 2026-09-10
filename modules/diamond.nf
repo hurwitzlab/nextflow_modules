@@ -22,8 +22,8 @@ process diamond_makedb {
 // Search a sample's protein sequences against a diamond database with blastp
 process diamond_blastp {
     label "process_high"
+    label "publish_final"
     container "${params.container__diamond}"
-    publishDir "${params.diamond_outdir}", mode: 'copy'
 
     // Diamond is dual-indexed search. The software should be smart enough to avoid running out of
     // memory by chunking, but bigger DB and/or bigger query means provisioning more resources
@@ -50,8 +50,8 @@ process diamond_blastp {
 // Search a sample's nucleic acid gene calls against a diamond database with blastx
 process diamond_blastx {
     label "process_high"
+    label "publish_final"
     container "${params.container__diamond}"
-    publishDir "${params.diamond_outdir}", mode: 'copy'
 
     // Diamond is dual-indexed search. The software should be smart enough to avoid running out of
     // memory by chunking, but bigger DB and/or bigger query means provisioning more resources

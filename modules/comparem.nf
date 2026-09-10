@@ -3,8 +3,8 @@
 // Identify the best-matching reference genome for a sample's genome by average amino acid identity (AAI) with CompareM
 process identify_reference_genome {
     label "process_low"
+    label "publish_final"
     container "${params.container__comparem}"
-    publishDir "${params.comparem_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(query_genome)
@@ -54,6 +54,8 @@ process identify_reference_genome {
 process find_candidate_references {
     label "process_high"
     container "${params.container__comparem}"
+    // NOTE: no sampleid in scope -- this ranks references across a whole
+    // directory of query genomes at once, not per sample.
     publishDir "${params.comparem_outdir}", mode: 'copy'
 
     input:

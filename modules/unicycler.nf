@@ -3,8 +3,8 @@
 // Assemble a short-read sample into contigs with Unicycler
 process unicycler_short_read_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__unicycler}"
-    publishDir "${params.unicycler_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads_r1), path(reads_r2), path(single_reads)
@@ -25,8 +25,8 @@ process unicycler_short_read_assembly {
 // Assemble a long-read sample into contigs with Unicycler
 process unicycler_long_read_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__unicycler}"
-    publishDir "${params.unicycler_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(long_reads)
@@ -45,8 +45,8 @@ process unicycler_long_read_assembly {
 // Hybrid-assemble a sample's short and long reads into contigs with Unicycler
 process unicycler_hybrid_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__unicycler}"
-    publishDir "${params.unicycler_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads_r1), path(reads_r2), path(long_reads)
@@ -65,8 +65,8 @@ process unicycler_hybrid_assembly {
 // Hybrid-assemble a sample's short (paired + unpaired) and long reads into contigs with Unicycler
 process unicycler_hybrid_assembly_bacterial {
     label "process_high"
+    label "publish_final"
     container "${params.container__unicycler}"
-    publishDir "${params.unicycler_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads_r1), path(reads_r2), path(single_reads), path(long_reads)

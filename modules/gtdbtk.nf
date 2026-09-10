@@ -5,8 +5,8 @@
 // https://ecogenomics.github.io/GTDBTk/
 process gtdbtk_classify_genome {
     label "process_high"
+    label "publish_final"
     container "${params.container__gtdbtk}"
-    publishDir "${params.gtdbtk_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(genome, stageAs: "genome.fna")

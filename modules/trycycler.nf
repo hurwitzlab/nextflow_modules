@@ -3,8 +3,8 @@
 // Assemble a long-read sample into a consensus contig by clustering, reconciling, and polishing multiple independent assemblies
 process trycycler_long_read_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__trycycler}"
-    publishDir "${params.trycycler_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads)

@@ -4,6 +4,9 @@
 process generate_multiple_sequence_alignment_dir {
     label "process_high"
     container "${params.container__muscle}"
+    // No sampleid here (aligns a whole directory of fastas, not per-sample)
+    // so the Closure-based publishDir convention doesn't apply -- stays a
+    // plain path.
     publishDir "${params.muscle_outdir}", mode: 'copy'
 
     input:

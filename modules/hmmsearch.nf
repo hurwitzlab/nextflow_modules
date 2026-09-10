@@ -2,6 +2,7 @@
 
 // Search a protein catalog against a Pfam HMM database with hmmsearch
  process hmmsearch {
+    label "process_high"
     container "${params.container__hmmer}"
     publishDir "${params.hmmsearch_outdir}", mode: 'copy'
 

@@ -3,8 +3,8 @@
 // Detect antimicrobial resistance genes in an assembly with ResFinder
 process resfinder {
     label "process_single"
+    label "publish_final"
     container "${params.container__resfinder}"
-    publishDir "${params.resfinder_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

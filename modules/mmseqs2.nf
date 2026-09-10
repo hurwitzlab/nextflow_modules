@@ -2,7 +2,11 @@
 
 // Cluster sequences into representative OTU-style clusters with mmseqs2 easy-cluster
 process mmseqs_cluster {
+    label "process_high"
     container "${params.container__mmseqs2}"
+    // No sampleid here (clusters a whole sequence corpus, not per-sample) so
+    // the Closure-based publishDir convention (which takes sampleid) doesn't
+    // apply -- stays a plain path.
     publishDir "${params.mmseqs2_outdir}", mode: 'copy'
 
     input:
@@ -29,6 +33,9 @@ process mmseqs_cluster {
 process cluster_proteins {
     label "process_high"
     container "${params.container__mmseqs}"
+    // No sampleid here (clusters a whole protein database, not per-sample)
+    // so the Closure-based publishDir convention doesn't apply -- stays a
+    // plain path.
     publishDir "${params.mmseqs_outdir}", mode: 'copy'
 
     input:
@@ -56,13 +63,13 @@ process cluster_proteins {
     /^>/ {
         if (h==$0) {
             close(file);
-            f=h; sub(">", "", f); gsub(/[\(\)\047\057]/, "_", f);
+            f=h; sub(">", "", f); gsub(/[\\(\\)\\047\\057]/, "_", f);
             file=sprintf("%s.fasta", f);
         }
         h=$0; next;
     }
     {
-        print h "\n" $0 >> file
+        print h "\\n" $0 >> file
     }' "../!{params.mmseqs_prefix}_all_seqs.fasta"
 
     # create tarball in context of clusters (so only contains files)

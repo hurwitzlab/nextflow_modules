@@ -4,8 +4,8 @@
 // Infer viral sequences using deepvirfinder 
  process deepvirfinder {
     label "process_medium"
+    label "publish_final"
     container "${params.container__deepvirfinder}"
-    publishDir "${params.deepvirfinder_outdir}", mode: 'copy'
                         
     input:
         tuple val(sampleid), path(contigs)

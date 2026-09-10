@@ -9,9 +9,10 @@
 // is a placeholder — confirm the real entrypoint command (e.g. `apptainer
 // inspect --deffile <sif>`) before relying on this module.
  process deepmicroclass2 {
+    label "process_high"
+    label "publish_final"
     container "${params.container__deepmicroclass2}"
     containerOptions '--nv'
-    publishDir "${params.deepmicroclass2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

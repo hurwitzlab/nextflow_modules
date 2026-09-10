@@ -5,8 +5,8 @@
 // retry/time policy in the pipeline's resource config to guard against that)
 process fastqc {
     label "process_single"
+    label "publish_final"
     container "${params.container__fastqc}"
-    publishDir "${params.fastqc_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1, stageAs: "R1.fastq.gz"), path(r2, stageAs: "R2.fastq.gz")
@@ -24,8 +24,8 @@ process fastqc {
 // Run FastQC on a sample's single-end reads, producing a report directory
 process fastqc_single_reads {
     label "process_single"
+    label "publish_final"
     container "${params.container__fastqc}"
-    publishDir "${params.fastqc_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1, stageAs: "R1.fastq.gz")
@@ -43,8 +43,8 @@ process fastqc_single_reads {
 // Run FastQC on a sample's unpaired reads, producing a single report zip (amplicon-sequencing use case)
 process fastqc_unpaired_reads {
     label "process_low"
+    label "publish_final"
     container "${params.container__fastqc}"
-    publishDir "${params.fastqc_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(unpaired_reads, stageAs: "unpaired_reads.fastq.gz")

@@ -3,8 +3,8 @@
 // Quality-trim a sample's paired-end reads with fastp
 process trim_paired_end {
     label "process_medium"
+    label "publish_final"
     container "${params.container__fastp}"
-    publishDir "${params.fastp_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)
@@ -40,8 +40,8 @@ process trim_paired_end {
 // Quality-trim a sample's single-end reads with fastp
 process trim_single_end {
     label "process_medium"
+    label "publish_final"
     container "${params.container__fastp}"
-    publishDir "${params.fastp_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1)

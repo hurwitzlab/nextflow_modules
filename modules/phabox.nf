@@ -2,7 +2,11 @@
 
 // Predict phage lifestyle (virulent/temperate) with phabox2's phatyp task
  process phatyp {
+    label "process_high"
     container "${params.container__phabox}"
+    // No sampleid here (runs over a whole viral-sequences fasta, not
+    // per-sample) so the Closure-based publishDir convention doesn't apply
+    // -- stays a plain path.
     publishDir "${params.phabox_outdir}", mode: 'copy'
 
     input:

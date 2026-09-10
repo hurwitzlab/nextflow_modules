@@ -34,11 +34,45 @@ described below.
   never define what it resolves to.
 - Next line: `container "${params.container__<tool>}"`.
 - If the process produces a result meant to persist (final per-sample output,
-  a report, a summary), add:
-  `publishDir "${params.<tool>_outdir}", mode: 'copy'`
-  right after `container`. Skip `publishDir` for purely intermediate steps
-  that only feed the next process (e.g. `bbwrap`'s raw alignment, `sam_to_bam`/
-  `sort_bam`'s intermediate `.bam`).
+  a report, a summary) **and has `sampleid` in scope** (see the exception
+  below if not), add a second label — `label "publish_intermediate"` or
+  `label "publish_final"` — right after the resource label, and add
+  **no `publishDir` directive at all**. This is the standard convention:
+  every pipeline built in this lab is expected to define
+  `withLabel:publish_intermediate`/`withLabel:publish_final` blocks in its
+  own config (see `viral_inference_benchmark/nextflow_pipeline/conf/base.config`
+  for the reference implementation — every pipeline modeled on it follows the
+  same structure), which is what actually gives the process a `publishDir`
+  (path *and* `mode`), dispatched per-process via `task.process` to look up
+  that process's own `params.<tool>_outdir` (plain path or a Closure taking
+  `sampleid` — same duality as before, just resolved centrally instead of
+  per-module). Skip both labels and any `publishDir` entirely for purely
+  intermediate steps that only feed the next process (e.g. `bbwrap`'s raw
+  alignment, `sam_to_bam`/`sort_bam`'s intermediate `.bam`).
+  - Pick the tier the same way you picked `process_<tier>`: by precedent
+    against a comparable tool already labeled in this repo, reasoning about
+    what that tool typically delivers (a report, an assembly, a
+    classification = `publish_final`; a step whose output only feeds the
+    next process in the same file/tool-chain = `publish_intermediate`), not
+    a reflexive default. Document the precedent you matched in the module's
+    one-line comment or your PR/commit description.
+  - **Exception: a process with no `sampleid` in scope cannot use this
+    label-based form at all.** The centralized dispatch closure references
+    `sampleid` as an argument; a process whose input isn't per-sample — it
+    builds/consumes a reference index, merges or compares across multiple
+    samples, or runs once per whole batch/run (e.g. an `*_index`/`build_*`
+    step, a cross-sample `compare_*`/`cluster_*` step, a demux step) — has
+    no such variable, and referencing it anyway is a hard compile-time error
+    (`sampleid is not defined`), not a harmless no-op. These processes keep
+    the older, in-module form instead:
+    `publishDir { params.<tool>_outdir instanceof Closure ? params.<tool>_outdir(sampleid) : params.<tool>_outdir }, mode: 'copy'`
+    (no `sampleid` reference in the ternary's own construction — it's inside
+    the Closure body, only evaluated if `params.<tool>_outdir` actually is
+    one — so this form works whether or not the process is per-sample, as
+    long as whoever wires it up never passes a sampleid-taking Closure for a
+    non-per-sample process). See `bbmap.nf`'s `bbstats`, `checkv.nf`'s
+    `checkv_end_to_end`, and `megahit.nf`'s `megahit_paired_end`/
+    `megahit_single_end` for worked examples.
 
 ## Input / output
 
@@ -86,7 +120,8 @@ described below.
 
 ## Checklist before considering a module done
 
-1. Shebang, comment, process name, label, container, (publishDir if terminal output).
+1. Shebang, comment, process name, label, container, (publishDir as a Closure,
+   per above, if terminal output).
 2. Inputs as `tuple val(sampleid), path(...)` + separate db paths as needed.
 3. Outputs all named via `emit:`, `sampleid` preserved.
 4. `shell:` + `!{...}`, no `${...}` mixed in.

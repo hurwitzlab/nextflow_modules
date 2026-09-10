@@ -3,8 +3,8 @@
 // Polish a draft assembly using nanopore reads with Medaka
 process medaka_polish_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__medaka}"
-    publishDir "${params.medaka_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads), path(draft_assembly)

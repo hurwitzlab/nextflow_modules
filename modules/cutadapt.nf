@@ -20,8 +20,8 @@ TODO:
 // Trim amplicon primer sequences from merged paired-end reads
 process trim_merged_fastq {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__cutadapt}"
-    publishDir "${params.cutadapt_outdir}", mode: 'copy'
 
     time '30m'
 
@@ -56,8 +56,8 @@ process trim_merged_fastq {
 // Trim unmerged reads, i.e. trim the forward primer on a single-end reads file
 process trim_single_fastq {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__cutadapt}"
-    publishDir "${params.cutadapt_outdir}", mode: 'copy'
 
     time '30m'
 
@@ -91,8 +91,8 @@ process trim_single_fastq {
 // Trim paired-end amplicon reads (forward and reverse primers)
 process trim_amplicon_reads {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__cutadapt}"
-    publishDir "${params.cutadapt_outdir}", mode: 'copy'
 
     time '30m'
 

@@ -4,6 +4,9 @@
 process find_engineered_snvs {
     label "process_single"
     container "${params.container__minimap2}"
+    // No sampleid here (compares two whole genomes, not per-sample) so the
+    // Closure-based publishDir convention (which takes sampleid) doesn't
+    // apply -- stays a plain path.
     publishDir "${params.minimap2_outdir}", mode: 'copy'
 
     input:
@@ -74,8 +77,8 @@ process align_to_index {
 // Estimate per-read accuracy of a sample's ONT reads against a reference with minimap2 all-vs-all alignment
 process ont_read_accuracy {
     label "process_medium"
+    label "publish_final"
     container "${params.container__minimap2}"
-    publishDir "${params.minimap2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads)

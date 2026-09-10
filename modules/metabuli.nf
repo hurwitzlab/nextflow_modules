@@ -2,8 +2,9 @@
 
 // Classify contigs taxonomically with metabuli
  process metabuli {
+    label "process_high"
+    label "publish_final"
     container "${params.container__metabuli}"
-    publishDir "${params.metabuli_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

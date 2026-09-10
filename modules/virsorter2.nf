@@ -4,9 +4,9 @@
 // Infer viral sequences using virsorter2
  process virsorter2 {
     label "process_high"
+    label "publish_final"
     container "${params.container__virsorter2}"
-    publishDir "${params.virsorter2_outdir}", mode: 'copy'
-                        
+
     input:
         tuple val(sampleid), path(contigs)
         path(virsorter2_db)
@@ -57,8 +57,8 @@ process find_phages_sensitive {
 // Round two of VirSorter2 (specific pass) per: https://www.protocols.io/view/viral-sequence-identification-sop-with-virsorter2-bwm5pc86?step=3
 process find_phages_specific {
     label "process_high"
+    label "publish_final"
     container "${params.container__virsorter2}"
-    publishDir "${params.virsorter2_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:

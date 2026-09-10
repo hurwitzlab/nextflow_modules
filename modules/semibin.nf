@@ -3,8 +3,8 @@
 // Bin genomes from a sample's assembly and read-mapping BAM using SemiBin
 process bin_contigs {
     label "process_medium"
+    label "publish_final"
     container "${params.container__semibin}"
-    publishDir "${params.semibin_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(assembly), path(bam)

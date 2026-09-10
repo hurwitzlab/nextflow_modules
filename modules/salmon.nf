@@ -3,8 +3,8 @@
 // Quantify reads already aligned to a reference transcriptome
 process quantify_transcripts_aligned {
     label "process_medium"
+    label "publish_final"
     container "${params.container__salmon}"
-    publishDir "${params.salmon_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(aligned_reads)
@@ -35,8 +35,8 @@ process quantify_transcripts_aligned {
 // TODO - use decoys when building index, but account for UTRs in genome but missing in CDS used as transcripts
 process quantify_transcripts_mapping_mode {
     label "process_medium"
+    label "publish_final"
     container "${params.container__salmon}"
-    publishDir "${params.salmon_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1_fq_gz), path(r2_fq_gz)

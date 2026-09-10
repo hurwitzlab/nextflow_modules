@@ -4,6 +4,9 @@
 process find_engineered_snvs {
     label "process_single"
     container "${params.container__mummer}"
+    // No sampleid here (compares two whole genomes, not per-sample) so the
+    // Closure-based publishDir convention (which takes sampleid) doesn't
+    // apply -- stays a plain path.
     publishDir "${params.mummer_outdir}", mode: 'copy'
 
     input:

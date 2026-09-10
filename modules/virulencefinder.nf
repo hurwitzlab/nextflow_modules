@@ -3,8 +3,8 @@
 // Identify virulence factors in a sample's contigs using VirulenceFinder
 process virulencefinder {
     label "process_single"
+    label "publish_final"
     container "${params.container__virulencefinder}"
-    publishDir "${params.virulencefinder_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

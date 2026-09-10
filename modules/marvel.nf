@@ -4,8 +4,8 @@
 // Infering viral bins from reads with marvel
  process marvel {
     label "process_medium"
+    label "publish_final"
     container "${params.container__marvel}"
-    publishDir "${params.marvel_outdir}", mode: 'copy'
                         
     input:
         tuple val(sampleid), path(clean_r1), path(clean_r2)

@@ -3,6 +3,7 @@
 
 // Index a reference sequence with bwa
  process bwa_index {
+    label "process_single"
     container "${params.container__bwa}"
                         
     input:
@@ -22,6 +23,7 @@
 
 // Align reads to an indexed reference with bwa mem
 process bwa_mem {
+    label "process_high"
     container "${params.container__bwa}"
 
     input:

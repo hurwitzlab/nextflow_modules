@@ -4,6 +4,9 @@
 process demux {
     label "process_high"
     container "${params.container__bcl2fastq}"
+    // NOTE: no sampleid in scope -- demux runs once per sequencing run, not
+    // per sample (that's the whole point of this process; not a convention
+    // gap). Left as a plain string; the Closure pattern needs sampleid.
     publishDir "${params.bcl2fastq_outdir}", mode: 'copy'
 
     input:
@@ -23,6 +26,7 @@ process demux {
 process demux_samplesheet {
     label "process_high"
     container "${params.container__bcl2fastq}"
+    // NOTE: no sampleid in scope -- see demux above.
     publishDir "${params.bcl2fastq_outdir}", mode: 'copy'
 
     input:

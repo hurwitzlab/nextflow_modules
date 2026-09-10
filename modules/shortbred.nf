@@ -3,8 +3,8 @@
 // Identify antibiotic resistance and virulence factor markers with ShortBRED
 process identify_virulence_factors {
     label "process_high"
+    label "publish_final"
     container "${params.container__shortbred}"
-    publishDir "${params.shortbred_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(genome)

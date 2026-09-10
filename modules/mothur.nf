@@ -3,8 +3,8 @@
 // Generate ASVs and taxonomic assignments from paired-end 16S reads with mothur (see container for configurable read-length/region parameters)
 process generate_asvs {
     label "process_low"
+    label "publish_final"
     container "${params.container__mothur}"
-    publishDir "${params.mothur_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1, stageAs: "r1.fastq.gz"), path(r2, stageAs: "r2.fastq.gz")

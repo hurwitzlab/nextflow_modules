@@ -3,8 +3,8 @@
 // Estimate strain composition from paired-end reads against a pan-genome database with StrainGST
 process strainge_run_straingst_paired_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__strainge}"
-    publishDir "${params.strainge_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:
@@ -38,8 +38,8 @@ process strainge_run_straingst_paired_end {
 // Estimate strain composition from single-end reads against a pan-genome database with StrainGST
 process strainge_run_straingst_single_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__strainge}"
-    publishDir "${params.strainge_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:

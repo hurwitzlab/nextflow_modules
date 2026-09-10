@@ -99,8 +99,8 @@ process jackhmmer_dir {
 // Build an HMM profile from a multiple sequence alignment
 process hmmbuild {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__hmmer}"
-    publishDir "${params.hmmer_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(alignment)

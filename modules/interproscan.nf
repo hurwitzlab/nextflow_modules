@@ -3,8 +3,8 @@
 // Annotate a sample's predicted proteins with InterProScan
 process interproscan {
     label "process_high"
+    label "publish_final"
     container "${params.container__interproscan}"
-    publishDir "${params.interproscan_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(proteins)

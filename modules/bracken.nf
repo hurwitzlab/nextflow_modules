@@ -2,8 +2,9 @@
 
 // Re-estimate species abundance from a kraken2 report with bracken
  process bracken {
+    label "process_single"
+    label "publish_final"
     container "${params.container__bracken}"
-    publishDir "${params.bracken_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(kreport)

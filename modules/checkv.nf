@@ -4,21 +4,21 @@
 // Estimating viral inference quality with CheckV
  process checkv {
     label "process_medium"
+    label "publish_final"
     container "${params.container__checkv}"
-    publishDir "${params.checkv_outdir}", mode: 'copy'
-                        
+
     input:
         tuple val(sampleid), path(inferred_sequences)
         path(checkv_db)
 
     output:
-        tuple val(sampleid), path("${sampleid}"), emit: quality_assessment
+        tuple val(sampleid), path("quality"), emit: quality_assessment
 
     shell:
     '''
     checkv end_to_end \
     !{inferred_sequences} \
-    !{sampleid} \
+    quality \
     --threads !{task.cpus} \
     --db !{checkv_db}
     '''
@@ -30,8 +30,8 @@
 // pipeline run means they'd publish to the same output dir. Rename one pair before doing so.
 process checkv_end_to_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__checkv}"
-    publishDir "${params.checkv_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(genome)

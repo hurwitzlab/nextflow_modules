@@ -4,6 +4,7 @@
 
 // Build a bowtie2 index from a reference genome
  process bowtie2_build {
+    label "process_single"
     container "${params.container__bowtie2}"
 
     input:
@@ -24,8 +25,9 @@
 
 // Align paired reads to a host reference and keep the unmapped (host-free) reads
  process bowtie2_align {
+    label "process_medium"
+    label "publish_intermediate"
     container "${params.container__bowtie2}"
-    publishDir "${params.bowtie2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(raw_r1), path(raw_r2), path(indexed_reference)

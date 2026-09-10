@@ -3,8 +3,8 @@
 // Compute a MinHash signature for a sample's assembled contigs with Sourmash
 process sourmash_hash {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__sourmash}"
-    publishDir "${params.sourmash_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

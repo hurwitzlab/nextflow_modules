@@ -20,8 +20,8 @@ process fastq_to_sam {
 // Estimate a sample's library complexity from its unmapped reads with Picard
 process estimate_library_complexity {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(unmapped_bam)
@@ -38,8 +38,8 @@ process estimate_library_complexity {
 // Mark duplicate reads (using mate cigar) in a sample's mapped BAM with Picard
 process mark_duplicates {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -62,8 +62,8 @@ process mark_duplicates {
 // Collect insert size metrics for a sample's mapped BAM with Picard
 process collect_insert_size_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -84,8 +84,8 @@ process collect_insert_size_metrics {
 // Collect GC bias metrics for a sample's mapped BAM against its reference with Picard
 process collect_gc_bias_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -105,8 +105,8 @@ process collect_gc_bias_metrics {
 // Collect alignment summary metrics for a sample's mapped BAM against its reference with Picard
 process collect_alignment_summary_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -124,8 +124,8 @@ process collect_alignment_summary_metrics {
 // Collect quality yield metrics for a sample's mapped BAM with Picard
 process collect_quality_yield_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -142,8 +142,8 @@ process collect_quality_yield_metrics {
 // Collect base distribution by cycle for a sample's mapped BAM with Picard
 process collect_base_distribution_by_cycle {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -164,8 +164,8 @@ process collect_base_distribution_by_cycle {
 // Collect whole-genome sequencing metrics for a sample's mapped BAM against its reference with Picard
 process collect_wgs_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(mapped_bam), path(mapped_bam_index)
@@ -183,8 +183,8 @@ process collect_wgs_metrics {
 // Collect variant calling metrics for a sample's VCF against a known dbSNP VCF with Picard
 process collect_variant_calling_metrics {
     label "process_single"
+    label "publish_final"
     container "${params.container__picard}"
-    publishDir "${params.picard_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(variant_calls)

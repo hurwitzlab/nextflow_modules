@@ -3,8 +3,8 @@
 // Generate Oxford Nanopore read QC metrics and plots for a sample with NanoPlot
 process nanoplot_qc {
     label "process_low"
+    label "publish_final"
     container "${params.container__nanoplot}"
-    publishDir "${params.nanoplot_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:

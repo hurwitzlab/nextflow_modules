@@ -9,7 +9,10 @@
 
 // Estimating relative abundance of vOTUs with CoverM (merged across all BAMs)
 process coverm {
+    label "process_medium"
     container "${params.container__coverm}"
+    // NOTE: no sampleid in scope -- this merges across all sample BAMs at
+    // once by design (see usage comment above).
     publishDir "${params.coverm_outdir}", mode: 'copy'
 
     input:

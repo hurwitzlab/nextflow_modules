@@ -3,8 +3,8 @@
 // Predict multi-locus sequence type from paired-end reads with stringMLST (deprecated in favor of mlst)
 process stringmlst {
     label "process_medium"
+    label "publish_final"
     container "${params.container__stringmlst}"
-    publishDir "${params.stringmlst_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)

@@ -65,8 +65,8 @@ process detect_chimeras_de_novo {
 // Count reads assigned to each denoised zOTU
 process count_denoised_amplicons {
     label "process_low"
+    label "publish_final"
     container "${params.container__vsearch}"
-    publishDir "${params.vsearch_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(trimmed_reads), path(zotus)
@@ -98,8 +98,8 @@ process count_denoised_amplicons {
 // because they have been renamed, and include the size of the cluster in the name.
 process detect_chimeras_from_reads {
     label "process_low"
+    label "publish_final"
     container "${params.container__vsearch}"
-    publishDir "${params.vsearch_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(trimmed_reads)
@@ -153,8 +153,8 @@ process detect_chimeras_from_reads {
 // This is also the primary way to match to expected amplicons
 process match_amplicons {
     label "process_low"
+    label "publish_final"
     container "${params.container__vsearch}"
-    publishDir "${params.vsearch_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(trimmed_reads)  // query sequences, trimmed reads

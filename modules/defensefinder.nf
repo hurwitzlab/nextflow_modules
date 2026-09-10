@@ -3,8 +3,8 @@
 // Evaluate bacterial defense mechanisms with defense-finder
 process find_defenses {
     label "process_low"
+    label "publish_final"
     container "${params.container__defensefinder}"
-    publishDir "${params.defensefinder_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(protein_sequences)

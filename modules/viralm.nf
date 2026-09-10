@@ -9,9 +9,10 @@
 // a placeholder — confirm the real entrypoint command before relying on this
 // module.
  process viralm {
+    label "process_medium"
+    label "publish_final"
     container "${params.container__viralm}"
     containerOptions '--nv'
-    publishDir "${params.viralm_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

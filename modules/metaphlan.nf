@@ -2,8 +2,9 @@
 
 // Profile taxonomic composition of paired reads with metaphlan
  process metaphlan {
+    label "process_high"
+    label "publish_final"
     container "${params.container__metaphlan}"
-    publishDir "${params.metaphlan_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(clean_r1), path(clean_r2)

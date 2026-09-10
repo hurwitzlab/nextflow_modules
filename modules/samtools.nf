@@ -38,8 +38,8 @@ process sort_bam {
 // Index a sorted BAM file
 process index_bam {
     label "process_single"
+    label "publish_final"
     container "${params.container__samtools}"
-    publishDir "${params.samtools_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(sorted_bam)
@@ -56,8 +56,8 @@ process index_bam {
 // Index a sample's alignment file (BAM/SAM/CRAM), preserving it alongside its index
 process index {
     label "process_single"
+    label "publish_final"
     container "${params.container__samtools}"
-    publishDir "${params.samtools_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(alignment_file)
@@ -161,8 +161,8 @@ process sort_by_name_to_bam {
 // Index a sample's FASTA, preserving it alongside its .fai index
 process fasta_index {
     label "process_single"
+    label "publish_final"
     container "${params.container__samtools}"
-    publishDir "${params.samtools_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(fasta_file)

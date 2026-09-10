@@ -3,8 +3,8 @@
 // Downsample and normalize a sample's paired-end reads by k-mer depth with BBNorm
 process downsample_paired_end {
     label "process_high"
+    label "publish_intermediate"
     container "${params.container__bbnorm}"
-    publishDir "${params.bbnorm_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)

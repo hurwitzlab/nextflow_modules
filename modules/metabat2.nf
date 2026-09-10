@@ -3,8 +3,8 @@
 // Bin contigs by tetranucleotide frequency and coverage using MetaBAT2
 process metabat2_bin {
     label "process_medium"
+    label "publish_final"
     container "${params.container__metabat2}"
-    publishDir "${params.metabat2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs, stageAs: "assembly.fasta"), path(bam)

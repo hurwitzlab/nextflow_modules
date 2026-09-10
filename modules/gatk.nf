@@ -36,8 +36,8 @@ process call_somatic_variants {
 // Filter a sample's Mutect2 somatic variant calls
 process filter_somatic_variants {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__gatk}"
-    publishDir "${params.gatk_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(variants), path(variants_index), path(variants_stats)
@@ -65,8 +65,8 @@ process filter_somatic_variants {
 // Annotate a sample's variant calls with read depth from its BAM
 process annotate_vcf_with_bam_depth {
     label "process_single"
+    label "publish_final"
     container "${params.container__gatk}"
-    publishDir "${params.gatk_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(variants), path(variants_index), path(reads)

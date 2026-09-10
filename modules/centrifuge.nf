@@ -3,8 +3,8 @@
 // Classify reads for taxonomic contamination with centrifuge
 process read_contamination {
     label "process_high"
+    label "publish_final"
     container "${params.container__centrifuge}"
-    publishDir "${params.centrifuge_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads_r1), path(reads_r2)

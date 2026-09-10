@@ -4,6 +4,9 @@
 process pycoqc_qc {
     label "process_medium"
     container "${params.container__pycoqc}"
+    // No sampleid here (flowcell-level QC, not per-sample) so the
+    // Closure-based publishDir convention doesn't apply -- stays a plain
+    // path.
     publishDir "${params.pycoqc_outdir}", mode: 'copy'
 
     input:

@@ -51,8 +51,8 @@ process annotate_variants {
 // Flag called variants that match the engineered strain's expected variant set
 process annotate_expected_variants {
     label "process_single"
+    label "publish_final"
     container "${params.container__snpeff}"
-    publishDir "${params.snpeff_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(vcf, stageAs: "variants.vcf.gz")
@@ -76,8 +76,8 @@ process annotate_expected_variants {
 // Convert an annotated VCF into a bespoke per-sample TSV/JSON variant report
 process variant_report {
     label "process_single"
+    label "publish_final"
     container "${params.container__snpeff}"
-    publishDir "${params.snpeff_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(vcf, stageAs: "variants.vcf.gz")

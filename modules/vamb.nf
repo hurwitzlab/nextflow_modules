@@ -3,8 +3,8 @@
 // Bin a sample's contigs into genome bins using assembly + JGI depth profile
 process bin_contigs {
     label "process_medium"
+    label "publish_final"
     container "${params.container__vamb}"
-    publishDir "${params.vamb_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(depth_file)

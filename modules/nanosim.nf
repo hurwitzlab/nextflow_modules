@@ -3,8 +3,8 @@
 // Profile a sample's ONT reads against a reference genome to estimate per-read error rates with NanoSim
 process nanosim_read_analysis {
     label "process_medium"
+    label "publish_final"
     container "${params.container__nanosim}"
-    publishDir "${params.nanosim_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:
@@ -33,8 +33,8 @@ process nanosim_read_analysis {
 // Estimate strain identity and abundance for a sample's ONT metagenomic reads against a reference index with NanoSim/minimap2
 process alignment_analysis {
     label "process_high"
+    label "publish_final"
     container "${params.container__nanosim}"
-    publishDir "${params.nanosim_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:

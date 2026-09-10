@@ -3,8 +3,8 @@
 // Assemble a sample's PacBio HiFi reads with Flye
 process flye_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__flye}"
-    publishDir "${params.flye_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads)
@@ -23,9 +23,9 @@ process flye_assembly {
 // Assemble a sample's Nanopore metagenomic reads with Flye
 process meta_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__flye}"
     errorStrategy 'ignore'
-    publishDir "${params.flye_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads)

@@ -3,8 +3,8 @@
 // Evaluate an Illumina paired-end assembly against QUAST metrics
 process evaluate_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(trimmed_r1), path(trimmed_r2)
@@ -35,8 +35,8 @@ process evaluate_assembly {
 // Evaluate an Illumina paired-end assembly against QUAST metrics using a known reference genome
 process evaluate_assembly_with_reference {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(trimmed_r1), path(trimmed_r2)
@@ -69,8 +69,8 @@ process evaluate_assembly_with_reference {
 // Evaluate a PacBio HiFi long-read assembly against QUAST metrics
 process evaluate_long_read_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(long_reads)
@@ -100,8 +100,8 @@ process evaluate_long_read_assembly {
 // Evaluate an ONT long-read assembly against QUAST metrics
 process evaluate_ont_phage_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(long_reads)
@@ -131,8 +131,8 @@ process evaluate_ont_phage_assembly {
 // Evaluate a hybrid PacBio/ONT + Illumina assembly against QUAST metrics
 process evaluate_hybrid_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         val(long_read_platform) // PacBio (pacbio) or Oxford Nanopore (nanopore)
@@ -165,8 +165,8 @@ process evaluate_hybrid_assembly {
 // Evaluate an Illumina paired-end metagenome assembly against metaQUAST metrics
 process evaluate_illumina_metagenome_assembly_paired_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(r1), path(r2)
@@ -191,8 +191,8 @@ process evaluate_illumina_metagenome_assembly_paired_end {
 // Evaluate an Illumina single-end metagenome assembly against metaQUAST metrics
 process evaluate_illumina_metagenome_assembly_single_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(r1)
@@ -216,8 +216,8 @@ process evaluate_illumina_metagenome_assembly_single_end {
 // Evaluate an ONT metagenome assembly against metaQUAST metrics
 process evaluate_ont_metagenome_assembly {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(r1)
@@ -241,8 +241,8 @@ process evaluate_ont_metagenome_assembly {
 // Evaluate a contigs-only assembly against QUAST metrics (no reads available)
 process evaluate_contigs {
     label "process_high"
+    label "publish_final"
     container "${params.container__quast}"
-    publishDir "${params.quast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

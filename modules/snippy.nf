@@ -3,8 +3,8 @@
 // Call variants against a reference genome from paired-end reads
 process snippy_from_reads {
     label "process_medium"
+    label "publish_final"
     container "${params.container__snippy}"
-    publishDir "${params.snippy_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)
@@ -28,8 +28,8 @@ process snippy_from_reads {
 // Call variants against a reference genome from assembled contigs
 process snippy_from_contigs {
     label "process_medium"
+    label "publish_final"
     container "${params.container__snippy}"
-    publishDir "${params.snippy_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

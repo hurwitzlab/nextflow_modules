@@ -3,8 +3,8 @@
 // Assemble paired-end reads into contigs with Shovill
 process assemble {
     label "process_high"
+    label "publish_final"
     container "${params.container__shovill}"
-    publishDir "${params.shovill_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)

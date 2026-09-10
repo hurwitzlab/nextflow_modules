@@ -3,8 +3,8 @@
 // Run CheckM lineage workflow for a single sample's assembled contigs
 process checkm_lineage {
     label "process_high"
+    label "publish_final"
     container "${params.container__checkm}"
-    publishDir "${params.checkm_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs, stageAs: "bins/contigs.fna") // checkm requires a directory of bin fasta files as input
@@ -21,8 +21,8 @@ process checkm_lineage {
 // Run CheckM lineage workflow on a directory of bin fasta files (e.g. bins from a binning algorithm like CONCOCT)
 process checkm_lineage_bins {
     label "process_high"
+    label "publish_final"
     container "${params.container__checkm}"
-    publishDir "${params.checkm_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(bins) // directory of per-bin fasta files; can't use stageAs since it only renames files, not directories

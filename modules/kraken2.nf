@@ -2,8 +2,9 @@
 
 // Classify paired reads taxonomically with kraken2
  process kraken2 {
+    label "process_high"
+    label "publish_final"
     container "${params.container__kraken2}"
-    publishDir "${params.kraken2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(clean_r1), path(clean_r2)
@@ -26,8 +27,8 @@
 // Classify paired-end reads taxonomically with kraken2 to identify contamination
 process read_contamination {
     label "process_high"
-    container "${params.container__kraken}"
-    publishDir "${params.kraken_outdir}", mode: 'copy'
+    label "publish_final"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1), path(r2)
@@ -55,8 +56,8 @@ process read_contamination {
 // Classify single-end reads taxonomically with kraken2
 process single_end_read_classification {
     label "process_high"
-    container "${params.container__kraken}"
-    publishDir "${params.kraken_outdir}", mode: 'copy'
+    label "publish_final"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1)
@@ -83,7 +84,7 @@ process single_end_read_classification {
 // Select paired-end reads matching a set of Kraken taxids (and their children)
 process paired_end_read_selector {
     label "process_single"
-    container "${params.container__kraken}"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1), path(r2), path(kraken_results), path(kraken_report)
@@ -115,7 +116,7 @@ process paired_end_read_selector {
 // Exclude paired-end reads matching a set of Kraken taxids (and their children)
 process paired_end_read_excluder {
     label "process_single"
-    container "${params.container__kraken}"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1), path(r2), path(kraken_results), path(kraken_report)
@@ -148,7 +149,7 @@ process paired_end_read_excluder {
 // Select single-end reads matching a set of Kraken taxids (and their children)
 process single_end_read_selector {
     label "process_single"
-    container "${params.container__kraken}"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1), path(kraken_results), path(kraken_report)
@@ -176,7 +177,7 @@ process single_end_read_selector {
 // Exclude single-end reads matching a set of Kraken taxids (and their children)
 process single_end_read_excluder {
     label "process_single"
-    container "${params.container__kraken}"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(r1), path(kraken_results), path(kraken_report)
@@ -205,8 +206,8 @@ process single_end_read_excluder {
 // Convert a kreport to line-delimited JSON for loading into an Athena table
 process kreport_to_json {
     label "process_single"
-    container "${params.container__kraken}"
-    publishDir "${params.kraken_outdir}", mode: 'copy'
+    label "publish_final"
+    container "${params.container__kraken2}"
 
     input:
         tuple val(sampleid), path(kreport)

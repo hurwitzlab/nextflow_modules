@@ -3,8 +3,8 @@
 // Merge overlapping paired-end reads for a sample with BBMerge
 process merge_fastqs {
     label "process_single"
+    label "publish_intermediate"
     container "${params.container__bbmerge}"
-    publishDir "${params.bbmerge_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)

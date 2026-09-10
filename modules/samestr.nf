@@ -6,6 +6,7 @@
 
 // Convert a per-sample metaphlan SAM file into a SNP profile (npz)
  process samestr_convert {
+    label "process_medium"
     container "${params.container__samestr}"
 
     input:
@@ -28,6 +29,7 @@
 
 // Merge per-sample SNP profiles into per-SGB matrices across all samples
 process samestr_merge {
+    label "process_medium"
     container "${params.container__samestr}"
 
     input:
@@ -49,6 +51,7 @@ process samestr_merge {
 
 // Remove low-quality markers and under-covered samples from merged profiles
 process samestr_filter {
+    label "process_low"
     container "${params.container__samestr}"
 
     input:
@@ -70,7 +73,11 @@ process samestr_filter {
 
 // Compute alignment statistics for QC reporting
 process samestr_stats {
+    label "process_low"
     container "${params.container__samestr}"
+    // No sampleid here (aggregates stats across all filtered samples, not
+    // per-sample) so the Closure-based publishDir convention doesn't apply
+    // -- stays a plain path.
     publishDir "${params.samestr_outdir}/stats", mode: 'copy'
 
     input:
@@ -92,7 +99,11 @@ process samestr_stats {
 
 // Compute pairwise strain similarity scores between all sample pairs
 process samestr_compare {
+    label "process_high"
     container "${params.container__samestr}"
+    // No sampleid here (computes all-pairs comparisons across every sample,
+    // not per-sample) so the Closure-based publishDir convention doesn't
+    // apply -- stays a plain path.
     publishDir "${params.samestr_outdir}/compare", mode: 'copy'
 
     input:
@@ -114,7 +125,11 @@ process samestr_compare {
 
 // Call strain-sharing events from pairwise comparisons
 process samestr_summarize {
+    label "process_low"
     container "${params.container__samestr}"
+    // No sampleid here (summarizes strain-sharing across all sample-pair
+    // comparisons, not per-sample) so the Closure-based publishDir
+    // convention doesn't apply -- stays a plain path.
     publishDir "${params.samestr_outdir}/summary", mode: 'copy'
 
     input:

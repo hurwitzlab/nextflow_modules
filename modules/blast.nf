@@ -4,6 +4,7 @@
 
 // Build a nucleotide BLAST database from a fasta file
  process makeblastdb {
+    label "process_single"
     container "${params.container__blast}"
 
     input:
@@ -23,8 +24,9 @@
 
 // Search a query fasta against a BLAST database with blastn
  process blastn {
+    label "process_single"
+    label "publish_final"
     container "${params.container__blast}"
-    publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(query_seqs), path(blast_db)
@@ -47,8 +49,8 @@
 // Nucleotide BLAST a sample's contigs against a small reference fasta, building the database in place
 process blastn_reference_fasta {
     label "process_single"
+    label "publish_final"
     container "${params.container__blast}"
-    publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)
@@ -81,8 +83,8 @@ process blastn_reference_fasta {
 // Megablast a sample's contigs against a shared BLAST database, keeping high-identity hits
 process megablast_reference_database {
     label "process_high"
+    label "publish_final"
     container "${params.container__blast}"
-    publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)
@@ -153,6 +155,9 @@ process blastn_pairwise_all_vs_all {
 process summarize_blastn_all_pairwise {
     label "process_single"
     container "${params.container__blast}"
+    // NOTE: no sampleid in scope -- this summarizes across all pairwise
+    // comparisons at once, not per sample. Left as a plain string; the
+    // Closure pattern needs sampleid.
     publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:
@@ -173,6 +178,7 @@ process summarize_blastn_all_pairwise {
 process visualize_blastn_all_pairwise {
     label "process_single"
     container "${params.container__blast}"
+    // NOTE: no sampleid in scope -- see summarize_blastn_all_pairwise above.
     publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:
@@ -218,6 +224,7 @@ process parse_blast_xml {
 process refine_and_filter_hits {
     label "process_medium"
     container "${params.container__blast}"
+    // NOTE: no sampleid in scope -- see summarize_blastn_all_pairwise above.
     publishDir "${params.blast_outdir}", mode: 'copy'
 
     input:

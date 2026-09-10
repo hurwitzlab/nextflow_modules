@@ -3,8 +3,8 @@
 // Assemble paired-end reads into contigs with SPAdes; a low-coverage failure re-raises as exit code 100 to trigger a retry instead of over-provisioning
 process assemble {
     label "process_high"
+    label "publish_final"
     container "${params.container__spades}"
-    publishDir "${params.spades_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:
@@ -56,8 +56,8 @@ process assemble {
 // Assemble paired-end metagenomic reads into contigs with SPAdes in meta mode
 process assemble_metagenome {
     label "process_high"
+    label "publish_final"
     container "${params.container__spades}"
-    publishDir "${params.spades_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:
@@ -110,8 +110,8 @@ process assemble_metagenome {
 // Assemble single-end reads into contigs with SPAdes
 process assemble_metagenome_single_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__spades}"
-    publishDir "${params.spades_outdir}", mode: 'copy'
     errorStrategy 'ignore'
 
     input:

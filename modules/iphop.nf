@@ -2,6 +2,7 @@
 
 // Predict prokaryotic hosts for viral sequences with iphop
  process iphop {
+    label "process_high"
     container "${params.container__iphop}"
     publishDir "${params.iphop_outdir}", mode: 'copy'
 

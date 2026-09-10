@@ -4,8 +4,8 @@
 // Infer viral sequences from contigs using vibrant
  process vibrant {
     label "process_high"
+    label "publish_final"
     container "${params.container__vibrant}"
-    publishDir "${params.vibrant_outdir}", mode: 'copy'
                         
     input:
         tuple val(sampleid), path(contigs)

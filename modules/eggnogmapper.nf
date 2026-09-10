@@ -2,8 +2,9 @@
 
 // Functionally annotate a protein fasta with eggNOG-mapper
  process eggnogmapper {
+    label "process_high"
+    label "publish_final"
     container "${params.container__eggnogmapper}"
-    publishDir "${params.eggnogmapper_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(protein_fasta)

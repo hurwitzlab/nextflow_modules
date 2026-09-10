@@ -23,8 +23,8 @@ process uniqsketch_build_index_stock {
 // Query a sample's paired-end reads against a UniqSketch reference index
 process uniqsketch_query_stock_sample {
     label "process_high"
+    label "publish_final"
     container "${params.container__uniqsketch}"
-    publishDir "${params.uniqsketch_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads_r1), path(reads_r2)

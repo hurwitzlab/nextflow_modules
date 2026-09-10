@@ -59,6 +59,10 @@ process normalize_variants {
 process add_variants_to_fasta {
     label "process_single"
     container "${params.container__bcftools}"
+    // NOTE: no sampleid in scope -- this whole file uses bare path(...)
+    // inputs, not the per-sample tuple convention (pre-existing, file-wide,
+    // out of scope here). Left as a plain string; the standard Closure
+    // publishDir pattern needs sampleid to close over.
     publishDir "${params.bcftools_outdir}", mode: 'copy'
 
     input:
@@ -122,6 +126,7 @@ process set_genotype {
 process concat_vcfs {
     label "process_single"
     container "${params.container__bcftools}"
+    // NOTE: no sampleid in scope -- see add_variants_to_fasta above.
     publishDir "${params.bcftools_outdir}", mode: 'copy'
 
     input:

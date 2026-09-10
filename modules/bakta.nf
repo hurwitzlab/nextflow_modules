@@ -2,7 +2,13 @@
 
 // Annotate genome/plasmid sequences with bakta
  process bakta {
+    label "process_medium"
     container "${params.container__bakta}"
+    // NOTE: this process takes path(seqs), not tuple val(sampleid), path(...)
+    // (a separate, pre-existing convention gap -- out of scope here), so it
+    // has no `sampleid` in scope for the standard Closure publishDir pattern.
+    // Left as a plain string; a human should decide whether to restructure
+    // this process's inputs to be per-sample before wiring it to a closure.
     publishDir "${params.bakta_outdir}", mode: 'copy'
 
     input:
@@ -27,8 +33,8 @@
 // Annotate a bacterial genome assembly with Bakta
 process annotate_bacterial {
     label "process_medium"
+    label "publish_final"
     container "${params.container__bakta}"
-    publishDir "${params.bakta_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

@@ -6,6 +6,9 @@
 process build_pangenome {
     label "process_high"
     container "${params.container__pirate}"
+    // No sampleid here (builds one pangenome across multiple input genomes,
+    // not per-sample) so the Closure-based publishDir convention doesn't
+    // apply -- stays a plain path.
     publishDir "${params.pirate_outdir}", mode: 'copy'
 
     input:

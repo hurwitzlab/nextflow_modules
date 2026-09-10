@@ -2,14 +2,14 @@
 
 // Assemble paired reads into contigs with megahit
  process megahit {
+    label "publish_final"
     container "${params.container__megahit}"
-    publishDir "${params.megahit_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(clean_r1), path(clean_r2)
 
     output:
-        tuple val(sampleid), path("${sampleid}/${sampleid}.contigs.fa"), emit: contigs
+        tuple val(sampleid), path("assembly/contigs.fa"), emit: contigs
 
     shell:
     '''
@@ -18,18 +18,20 @@
     --presets !{params.megahit_preset} \
     -1 !{clean_r1} \
     -2 !{clean_r2} \
-    -o !{sampleid} \
-    --out-prefix !{sampleid}
+    -o megahit_out \
+    --out-prefix out
 
-    rm -r !{sampleid}/intermediate_contigs
+    rm -r megahit_out/intermediate_contigs
+    mkdir -p assembly
+    mv megahit_out/out.contigs.fa assembly/contigs.fa
     '''
 }
 
 // Assemble paired-end reads into contigs with MEGAHIT
 process megahit_paired_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__megahit}"
-    publishDir "${params.megahit_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(r1), path(r2)
@@ -58,8 +60,8 @@ process megahit_paired_end {
 // Assemble single-end reads into contigs with MEGAHIT
 process megahit_single_end {
     label "process_high"
+    label "publish_final"
     container "${params.container__megahit}"
-    publishDir "${params.megahit_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(reads)

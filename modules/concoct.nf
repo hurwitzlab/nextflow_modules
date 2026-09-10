@@ -3,8 +3,8 @@
 // Split a sample's contigs into per-species bins from mapped read coverage with CONCOCT
 process bin_contigs {
     label "process_medium"
+    label "publish_final"
     container "${params.container__concoct}"
-    publishDir "${params.concoct_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(mapped_bam), path(mapped_bam_index)

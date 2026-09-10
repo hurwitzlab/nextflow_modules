@@ -3,8 +3,8 @@
 // Assess completeness and contamination of a sample's genome bins with CheckM2
 process checkm2 {
     label "process_medium"
+    label "publish_final"
     container "${params.container__checkm2}"
-    publishDir "${params.checkm2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(genome_bins)

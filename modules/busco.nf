@@ -3,8 +3,8 @@
 // Assess genome assembly completeness against a lineage-specific ortholog set with BUSCO
 process busco_assess {
     label "process_high"
+    label "publish_final"
     container "${params.container__busco}"
-    publishDir "${params.busco_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

@@ -3,8 +3,8 @@
 // Annotate a bacterial genome assembly with Prokka
 process annotate_bacterial {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:
@@ -51,8 +51,8 @@ process annotate_bacterial {
 // Annotate a phage genome with Prokka
 process annotate_phage {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:
@@ -104,8 +104,8 @@ process annotate_phage {
 // Annotate a phage genome with Prokka using a reference protein set
 process annotate_phage_with_proteins {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:
@@ -159,8 +159,8 @@ process annotate_phage_with_proteins {
 // Annotate a metagenome assembly with Prokka
 process annotate_metagenome {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.attempt <= 1 ? 'retry' : 'ignore' }
 
     input:
@@ -190,8 +190,8 @@ process annotate_metagenome {
 // Annotate a named phage genome with Prokka using a custom sample/timestamp prefix
 process annotate_custom_phage {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:
@@ -245,8 +245,8 @@ process annotate_custom_phage {
 // Annotate a named phage genome with Prokka
 process annotate_named_phage {
     label "process_medium"
+    label "publish_final"
     container "${params.container__prokka}"
-    publishDir "${params.prokka_outdir}", mode: 'copy'
     errorStrategy { task.exitStatus == 100 ? 'terminate' : 'retry' }
 
     input:

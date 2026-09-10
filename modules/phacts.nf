@@ -3,8 +3,8 @@
 // Predict virus lifestyle (e.g. lytic, temperate) from a set of predicted proteins
 process lifestyle {
     label "process_single"
+    label "publish_final"
     container "${params.container__phacts}"
-    publishDir "${params.phacts_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(proteins)

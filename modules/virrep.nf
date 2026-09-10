@@ -2,9 +2,10 @@
 
 // Identify viral sequences from contigs with VirRep
  process virrep {
+    label "process_medium"
+    label "publish_final"
     container "${params.container__virrep}"
     containerOptions '--nv'
-    publishDir "${params.virrep_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs)

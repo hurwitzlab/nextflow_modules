@@ -3,8 +3,8 @@
 // Bin contigs into per-species fasta files using paired-end read coverage with MaxBin2
 process maxbin2_bin_contigs {
     label "process_single"
+    label "publish_final"
     container "${params.container__maxbin2}"
-    publishDir "${params.maxbin2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(r1), path(r2)
@@ -31,8 +31,8 @@ process maxbin2_bin_contigs {
 // Bin contigs into per-species fasta files using single-end read coverage with MaxBin2
 process maxbin2_bin_contigs_single_end {
     label "process_single"
+    label "publish_final"
     container "${params.container__maxbin2}"
-    publishDir "${params.maxbin2_outdir}", mode: 'copy'
 
     input:
         tuple val(sampleid), path(contigs), path(r1)
